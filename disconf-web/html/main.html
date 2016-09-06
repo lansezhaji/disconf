@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html class="en">
-
+<!-- /home/disconf/war/html -->
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Disconf - 分布式配置管理平台</title>
@@ -87,11 +87,12 @@
         </div>
     
 
-
+<div ng-app="myApp" ng-controller="namesCtrl">
 <div id="Wrapper" class="clearfix">
     <div id="Main" style="margin-top:50px;">
         <div class="container-fluid">
             <div class="row-fluid" style="min-height:400px;">
+            <!-- 下拉列表选择环境 -->
                 <div class="sidebar span2" style="float:left;overflow:visible;">
 
                                                 <div class="dropdown" style="margin-top:20px;width:100%">
@@ -103,8 +104,23 @@
                             </div>
                             
                             <!--envroment list-->
-                            <ul id="envChoice" class="nav nav-pills nav-stacked" style="margin-top:20px;">
+                            <div style="margin-top:10px;background-color:lightgray">
+                                <input type="text" placeholder="搜索" style="width:70px" ng-model="test">
+                                <!-- <button conclick="searchEnveriment()">搜索</button> -->
+                            </div>
+                            <ul id="envChoice"  style="margin-top:20px;">
+                              <li ng-repeat="x in items | filter:test | orderBy:'country'">
+                               
+                                <a href='#' rel="{{x.id}}" style="
+                                        background: rgb(37, 128, 143) none repeat scroll 0% 0%;
+                                        color: white;
+                                        margin-top: 19px;
+                                        line-height: 28px;
+                                        width: 100px;padding:3px;border-radius:3px">{{x.name}} 环境 </a>
+                              </li>
                             </ul>
+<!--                             <ul id="envChoice" class="nav nav-pills nav-stacked" style="margin-top:20px;">
+                            </ul> -->
 
                 </div>
                 <div class="span10" style="float:left">
@@ -180,7 +196,7 @@
         </div>
     </div>
 </div>
-
+</div>
         
         <div id="footer">
             <div id="BottomMain">
@@ -203,6 +219,7 @@
         
         <script src="assets/js/jquery-1.11.0.js"></script>
         <script src="dep/jquery-ui-1.10.4.custom/js/jquery-ui-1.10.4.custom.js"></script>
+        <script src="http://cdn.static.runoob.com/libs/angular.js/1.4.6/angular.min.js"></script>
         <script src="dep/bootstrap/js/bootstrap.js"></script>
         <script src="assets/js/util.js"></script>
         <script src="assets/js/common.js"></script>
@@ -218,10 +235,20 @@
         </script>
 
 
-<script src="assets/js/mainList.js"></script>
+        <script src="assets/js/mainList.js"></script>
 
         <script src="assets/js/footer.js"></script>
-    
+        <script>
+                //     angular.module('myApp', []).controller('namesCtrl', function($scope) {
+                //     // $scope.names = item;
+                //     $scope.label = "danlu";
+                //     $scope.names = [
+                //         {name:'tan',country:'chengdu'},
+                //         {name:'zhang',country:'dazhou'},
+                //         {name:'sld',country:'eeeee'}
+                //     ];
+                // }); 
+        </script>
     </body>
 </html>
 

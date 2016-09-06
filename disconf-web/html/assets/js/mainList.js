@@ -37,6 +37,7 @@
         $("#appDropdownMenuTitle").text($(this).text());
         version = "#";
         fetchVersion(appId, envId);
+       
     });
 
     //
@@ -81,21 +82,31 @@
     //
     // 获取Env信息
     //
-    $.ajax({
-        type: "GET",
-        url: "/api/env/list"
-    }).done(
-        function (data) {
-            if (data.success === "true") {
-                var html = "";
-                var result = data.page.result;
-                $.each(result, function (index, item) {
-                    html += '<li><a rel=' + item.id + ' href="#">'
-                        + item.name + ' 环境</a></li>';
-                });
-                $("#envChoice").html(html);
-            }
-        });
+    angular.module('myApp', []).controller('namesCtrl', function($scope) {
+
+        $scope.items = [{id:'1',name:"正在初始化数据"}];
+         $.ajax({
+            type: "GET",
+            url: "/api/env/list"
+        }).done(
+            function (data) {
+                if (data.success === "true") {
+                    var html = "";
+                    var result = data.page.result;
+                    $scope.items = result;
+                    $scope.$apply();
+                    // $.each(result, function (index, item) {
+                    //     html += '<li><a rel=' + item.id + ' href="#">'
+                    //         + item.name + ' 环境</a></li>';
+                    // });
+                    // $("#envChoice").html(html);
+                }
+            });       
+    }); 
+    //
+    //
+    //
+
     $("#envChoice").on('click', 'li a', function () {
         envId = $(this).attr('rel');
         $("#env_info").html($(this).text());
