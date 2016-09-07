@@ -7,38 +7,27 @@
     var envId = -1;
     var version = "#";
 
-    //
-    // 获取APP信息
-    //
-    $.ajax({
-        type: "GET",
-        url: "/api/app/list"
-    }).done(
-        function (data) {
-            if (data.success === "true") {
-                var html = "";
-                var result = data.page.result;
-                $
-                    .each(
-                    result,
-                    function (index, item) {
-                        html += '<li role="presentation" role="menuitem" tabindex="-1"><a rel='
-                            + item.id
-                            + ' href="#">APP: '
-                            + item.name
-                            + '</a></li>';
-                    });
-                $("#applist").html(html);
-            }
+
+
+        $("#applist").on('click', 'li a', function (e) {
+            appId = $(this).attr('rel');
+            $("#app_info").html(", " + $(this).text());
+            $("#applist li").removeClass("active");
+            $(this).parent().addClass("active");
+            version = "#";
+            fetchVersion(appId, envId);
         });
-    $("#applist").on('click', 'li a', function (e) {
-        appId = $(this).attr('rel');
-        $("#app_info").html(", " + $(this).text());
-        $("#appDropdownMenuTitle").text($(this).text());
-        version = "#";
-        fetchVersion(appId, envId);
-       
-    });
+        $("#envChoice").on('click', 'li a', function () {
+            envId = $(this).attr('rel');
+            $("#env_info").html($(this).text());
+            $("#envChoice li").removeClass("active");
+            $(this).parent().addClass("active");
+            $("#appDropdownMenuTitle").text($(this).text());
+            version = "#";
+            fetchVersion(appId, envId);
+        });
+
+        fetchMainList();
 
     //
     // 获取版本信息
@@ -79,11 +68,35 @@
         });
     }
 
-    //
-    // 获取Env信息
-    //
-    angular.module('myApp', []).controller('namesCtrl', function($scope) {
 
+    angular.module('myApp', []).controller('namesCtrl', function($scope) {
+        //
+        // 获取APP信息
+        //
+        $scope.apps = [{id:'1',name:"正在初始化数据"}];
+        $.ajax({
+            type: "GET",
+            url: "/api/app/list"
+        }).done(
+            function (data) {
+            if (data.success === "true") {
+                var html = "";
+                var result = data.page.result;
+                $scope.apps = result;
+                $scope.$apply();
+                // $.each(result, function (index, item) {
+                //         html += '<li role="presentation" role="menuitem" tabindex="-1"><a rel='
+                //             + item.id
+                //             + ' href="#">APP: '
+                //             + item.name
+                //             + '</a></li>';
+                //     });
+                // $("#applist").html(html);
+            }
+        });
+            //
+            // 获取Env信息
+            //
         $scope.items = [{id:'1',name:"正在初始化数据"}];
          $.ajax({
             type: "GET",
@@ -103,20 +116,6 @@
                 }
             });       
     }); 
-    //
-    //
-    //
-
-    $("#envChoice").on('click', 'li a', function () {
-        envId = $(this).attr('rel');
-        $("#env_info").html($(this).text());
-        $("#envChoice li").removeClass("active");
-        $(this).parent().addClass("active");
-        version = "#";
-        fetchVersion(appId, envId);
-    });
-
-    fetchMainList();
 
     //
     // 渲染主列表
