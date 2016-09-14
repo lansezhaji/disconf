@@ -147,6 +147,7 @@ var options = {
             add_file_but.html("重新上传")
             errorrar.html("&nbsp;&nbsp;上传成功！");
             upload_status = 2;
+
         } else {
             upload_status = 3;
             bar.width(0)
@@ -250,6 +251,16 @@ $("#uploadChoice").on(
                         if (data.success === "true") {
                             $("#error").show();
                             $("#error").html(data.result);
+                            layer.confirm('是否返回配置首页？', {
+                                  btn: ['返回首页','继续增加'] //按钮
+                                }, function(){
+                                  layer.msg('的确很重要', {icon: 1});
+                                }, function(){
+                                  layer.msg('也可以这样', {
+                                    time: 20000, //20s后自动关闭
+                                    btn: ['明白了', '知道了']
+                                  });
+                            });
                         } else {
                             Util.input.whiteError($("#error"), data);
                         }
